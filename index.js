@@ -22,7 +22,42 @@ async function run() {
     try {
         // await client.connect();
 
-        const contests = client.db("organizerDB").collection("users");
+        const userCollection = client.db("organizerDB").collection("users");
+        const todoCollection = client.db("organizerDB").collection("todo");
+        const moderatorCollection = client.db("organizerDB").collection("moderator");
+        const completedCollection = client.db("organizerDB").collection("completed");
+
+        // All user
+        app.get('/users', async (req, res) => {
+            const result = await userCollection.find().toArray();
+            res.send(result)
+        })
+
+        // store user data
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const query = { email: user.email }
+            const existingUser = await userCollection.findOne(query);
+            if (existingUser) {
+                return res.send({ message: 'user already exist', insertedId: null })
+            }
+            const result = await userCollection.insertOne(user);
+            res.send(result)
+        })
+
+        // add task
+        app.post('/todo', async (req, res) => {
+            const task = req.body;
+            const result = await todoCollection.insertOne(task);
+            res.send(result)
+        })
+
+        // get todo task
+        app.get('/todo', async (req, res) => {
+            const result = await todoCollection.find().toArray();
+            res.send(result)
+        })
+
 
     } finally {
 
