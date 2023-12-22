@@ -15,7 +15,10 @@ const client = new MongoClient(uri, {
     }
 });
 
-app.use(cors());
+app.use(cors({
+    origin: ['https://organizer-272ab.web.app/'],
+
+}));
 app.use(express.json());
 
 async function run() {
@@ -24,8 +27,6 @@ async function run() {
 
         const userCollection = client.db("organizerDB").collection("users");
         const todoCollection = client.db("organizerDB").collection("todo");
-        const moderatorCollection = client.db("organizerDB").collection("moderator");
-        const completedCollection = client.db("organizerDB").collection("completed");
 
         // All user
         app.get('/users', async (req, res) => {
