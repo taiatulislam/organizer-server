@@ -16,7 +16,7 @@ const client = new MongoClient(uri, {
 });
 
 app.use(cors({
-    origin: ['https://organizer-272ab.web.app/'],
+    origin: ['https://organizer-272ab.web.app'],
 
 }));
 app.use(express.json());
